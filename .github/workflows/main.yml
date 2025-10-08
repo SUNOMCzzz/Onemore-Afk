@@ -1,0 +1,27 @@
+name: Minecraft AFK Bot
+
+on:
+  workflow_dispatch:
+  push:
+  schedule:
+    - cron: "0 */6 * * *"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cài Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Cài thư viện mineflayer
+        run: npm install mineflayer
+      - name: Chạy bot
+        env:
+          MCBOT_PASSWORD: ${{ secrets.MCBOT_PASSWORD }}
+        run: |
+          while true; do
+            node bot.js || true
+            sleep 5
+          done
